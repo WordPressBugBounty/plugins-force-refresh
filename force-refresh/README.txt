@@ -1,10 +1,10 @@
 === Force Refresh ===
-Stable tag: 2.12.1
+Stable tag: 2.13.0
 Contributors: jordanleven
 Tags: refresh, reload, single page application
 Requires PHP: 7.4
 Requires at least: 5.2
-Tested up to: 6.7
+Tested up to: 6.8
 License: GPLv2 or later
 Force Refresh is a simple plugin that allows you to force a page refresh for users currently visiting your site on a per-page or post basis.
 
@@ -34,6 +34,12 @@ Upload the Force Refresh plugin to your site, and then simply activate it. To fo
 5. If you're having trouble, clicking on "Troubleshooting" will allow you to view the current settings for Force Refresh and allow you to enter Debugging Mode — an enhanced browser console logging mode that can be used to diagnose issues.
 
 == Changelog ==
+#### 2.13.0
+_Released on April 21, 2025_
+
+##### **New Features**
+* Add support for WordPress 6.8.
+
 #### 2.12.1
 _Released on January 12, 2025_
 
