@@ -1,5 +1,5 @@
 === Force Refresh ===
-Stable tag: 2.16.0
+Stable tag: 2.16.1
 Contributors: jordanleven
 Tags: refresh, reload, single page application
 Requires PHP: 8.2
@@ -34,6 +34,12 @@ Upload the Force Refresh plugin to your site, and then simply activate it. To fo
 5. If you're having trouble, clicking on "Troubleshooting" will allow you to view the current settings for Force Refresh and allow you to enter Debugging Mode — an enhanced browser console logging mode that can be used to diagnose issues.
 
 == Changelog ==
+#### 2.16.1
+_Released on March 10, 2026_
+
+##### **Bug Fixes**
+* Performance enhancements and bug fixes.
+
 #### 2.16.0
 _Released on February 24, 2026_
 
