@@ -11,8 +11,10 @@ use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Debugging;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Options;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Refresh_Page;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Refresh_Site;
+use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Debug_Email;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Schedule_Refresh_Site;
 use JordanLeven\Plugins\ForceRefresh\Services\Debug_Storage_Service;
+use JordanLeven\Plugins\ForceRefresh\Services\Eol_Storage_Service;
 use JordanLeven\Plugins\ForceRefresh\Services\Feature_Flag_Service;
 use JordanLeven\Plugins\ForceRefresh\Services\Options_Storage_Service;
 
@@ -30,16 +32,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return  array   The versions data
  */
 function get_localized_data_versions(): array {
-    $force_refresh_plugin_data = get_plugin_data( get_main_plugin_file() );
+    $force_refresh_plugin_data = get_force_refresh_plugin_data();
+
+    $version_php = phpversion();
+    $version_wp  = get_bloginfo( 'version' );
 
     return array(
         'php'          => array(
-            'version'         => (string) phpversion(),
+            'version'         => (string) $version_php,
             'versionRequired' => (string) $force_refresh_plugin_data['RequiresPHP'],
+            'eolDate'         => Eol_Storage_Service::get_eol_date_php( $version_php ),
         ),
         'wordPress'    => array(
-            'version'         => (string) get_bloginfo( 'version' ),
+            'version'         => (string) $version_wp,
             'versionRequired' => (string) $force_refresh_plugin_data['RequiresWP'],
+            'eolDate'         => Eol_Storage_Service::get_eol_date_wordpress( $version_wp ),
         ),
         'forceRefresh' => array(
             'version'         => (string) $force_refresh_plugin_data['Version'],
@@ -76,7 +83,9 @@ function get_admin_api_endpoints(): array {
         'refreshPage'         => Api_Handler_Admin_Refresh_Page::get_rest_endpoint(),
         'options'             => Api_Handler_Admin_Options::get_rest_endpoint(),
         'debugging'           => Api_Handler_Admin_Debugging::get_rest_endpoint(),
+        'cronStatus'          => Api_Handler_Admin_Schedule_Refresh_Site::get_rest_endpoint_cron_status(),
         'scheduleRefreshSite' => Api_Handler_Admin_Schedule_Refresh_Site::get_rest_endpoint(),
+        'debugEmail'          => Api_Handler_Admin_Debug_Email::get_rest_endpoint(),
     );
 }
 
@@ -92,6 +101,7 @@ function get_localized_data(): array {
         'localData' => array(
             'siteId'                      => get_current_blog_id(),
             'scheduledRefreshes'          => Api_Handler_Admin_Schedule_Refresh_Site::get_scheduled_refreshes(),
+            'lastCronRun'                 => Api_Handler_Admin_Schedule_Refresh_Site::get_last_cron_run(),
             // Create a nonce for the user.
             'nonce'                       => wp_create_nonce( 'wp_rest' ),
             'adminEndpoints'              => get_admin_api_endpoints(),
@@ -108,6 +118,7 @@ function get_localized_data(): array {
             'postName'                    => get_the_title(),
             'isMultiSite'                 => (bool) is_multisite(),
             'currentSiteId'               => (int) get_current_blog_id(),
+            'siteUrl'                     => get_bloginfo( 'url' ),
             'versions'                    => $versions,
             'featureFlags'                => Feature_Flag_Service::get_all(),
         ),
