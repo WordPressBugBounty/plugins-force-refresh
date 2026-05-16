@@ -13,6 +13,7 @@ use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Refresh_Page;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Refresh_Site;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Debug_Email;
 use JordanLeven\Plugins\ForceRefresh\Api\Api_Handler_Admin_Schedule_Refresh_Site;
+use JordanLeven\Plugins\ForceRefresh\Services\Cdn_Detection_Service;
 use JordanLeven\Plugins\ForceRefresh\Services\Debug_Storage_Service;
 use JordanLeven\Plugins\ForceRefresh\Services\Eol_Storage_Service;
 use JordanLeven\Plugins\ForceRefresh\Services\Feature_Flag_Service;
@@ -35,7 +36,7 @@ function get_localized_data_versions(): array {
     $force_refresh_plugin_data = get_force_refresh_plugin_data();
 
     $version_php = phpversion();
-    $version_wp  = get_bloginfo( 'version' );
+    $version_wp  = get_wordpress_version();
 
     return array(
         'php'          => array(
@@ -56,6 +57,19 @@ function get_localized_data_versions(): array {
 }
 
 /**
+ * Add plugin-owned admin body classes for WordPress-version-specific styling.
+ *
+ * @param string $classes Space-separated admin body classes.
+ * @return string
+ */
+function add_force_refresh_admin_body_classes( string $classes ): string {
+    $major_version = (int) explode( '.', get_wordpress_version() )[0];
+    $classes      .= " force-refresh-wp{$major_version} ";
+
+    return $classes;
+}
+
+/**
  * Function to get the refresh options.
  *
  * @return  array  An array of refresh options.
@@ -69,6 +83,7 @@ function get_refresh_options(): array {
         'customRefreshIntervalMinimumInMinutes' => (float) $interval_minimum_minutes,
         'refreshInterval'                       => Options_Storage_Service::get_refresh_interval(),
         'showRefreshInMenuBar'                  => Options_Storage_Service::get_show_in_admin_bar(),
+        'useStaticFilePolling'                  => Options_Storage_Service::get_use_static_file_polling(),
     );
 }
 
@@ -110,6 +125,7 @@ function get_localized_data(): array {
             'targetAdminBar'              => '#' . HTML_ID_REFRESH_FROM_MENUBAR,
             'targetAdminMetaBox'          => '#' . HTML_ID_META_BOX,
             'targetNotificationContainer' => '#' . HTML_ID_REFRESH_NOTIFICATION_CONTAINER,
+            'detectedCdn'                 => Cdn_Detection_Service::get_detected_cdn(),
             'isDebugActive'               => Debug_Storage_Service::debug_mode_is_active(),
             'refreshOptions'              => get_refresh_options(),
             'releaseNotes'                => get_release_notes( $versions['forceRefresh']['version'] ),
@@ -144,4 +160,9 @@ function enqueue_force_refresh_scripts(): void {
 add_action(
     'admin_enqueue_scripts',
     __NAMESPACE__ . '\\enqueue_force_refresh_scripts'
+);
+
+add_filter(
+    'admin_body_class',
+    __NAMESPACE__ . '\\add_force_refresh_admin_body_classes'
 );
