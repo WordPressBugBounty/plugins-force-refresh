@@ -1,10 +1,10 @@
 === Force Refresh ===
-Stable tag: 3.1.2
+Stable tag: 3.2.0
 Contributors: jordanleven
 Tags: refresh, reload, live reload, page refresh, scheduled
 Requires PHP: 7.4
 Requires at least: 5.9
-Tested up to: 7.0
+Tested up to: 7.1
 License: GPLv2 or later
 Force Refresh lets you request page refreshes for visitors viewing your site, whether you want to refresh the whole site or a single page.
 
@@ -37,6 +37,13 @@ Upload Force Refresh to your site and activate it. When you're ready to request 
 7. If you're having trouble, clicking on "Troubleshooting" will allow you to view the current settings for Force Refresh and allow you to enter Debugging Mode: an enhanced browser console logging mode that can be used to diagnose issues.
 
 == Changelog ==
+#### 3.2.0
+_Released on August 13, 2026_
+
+##### **Changes**
+* Add support for WordPress 7.1.
+* Performance enhancements and bug fixes.
+
 #### 3.1.2
 _Released on August 1, 2026_
 

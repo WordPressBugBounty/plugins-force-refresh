@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'jordanleven/force-refresh',
-        'pretty_version' => 'v3.1.2',
-        'version' => '3.1.2.0',
-        'reference' => '7a2dd54add78b6f6ee9ca9bf2767304b671dc93e',
+        'pretty_version' => 'v3.2.0',
+        'version' => '3.2.0.0',
+        'reference' => 'e114f40b82384432df62a292e183564b892ebc58',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'jordanleven/force-refresh' => array(
-            'pretty_version' => 'v3.1.2',
-            'version' => '3.1.2.0',
-            'reference' => '7a2dd54add78b6f6ee9ca9bf2767304b671dc93e',
+            'pretty_version' => 'v3.2.0',
+            'version' => '3.2.0.0',
+            'reference' => 'e114f40b82384432df62a292e183564b892ebc58',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
